@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AppoinmentRepository extends JpaRepository<Appointment, Long> {
+public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
     boolean existsByUsersIdAndStatus(Long usersId, AppointmentStatus status);
     Optional<Appointment> findByUsers_IdAndDoctor_Id(Long usersId, Long doctorId);

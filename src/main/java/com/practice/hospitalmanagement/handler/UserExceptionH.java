@@ -5,7 +5,7 @@
 package com.practice.hospitalmanagement.handler;
 
 
-import com.practice.hospitalmanagement.Dto.RespondDto.RespondUsersExceptionDto;
+import com.practice.hospitalmanagement.Dto.RespondDto.ResponseUsersExceptionDto;
 import com.practice.hospitalmanagement.exception.UserNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,13 +26,13 @@ import java.time.LocalDateTime;
 public class UserExceptionH {
 
     @ExceptionHandler(UserNotFound.class)
-    public ResponseEntity<RespondUsersExceptionDto> handleUserNotFound(UserNotFound userNotFound) {
+    public ResponseEntity<ResponseUsersExceptionDto> handleUserNotFound(UserNotFound userNotFound) {
 //        ResponseEntity is just a wrapper box that contains:
 //        1️⃣ HTTP status
 //        2️⃣ HTTP headers
 //        3️⃣ Response body<T> : T  = <RespondErrorExceptionDto>
 
-        RespondUsersExceptionDto errorDto = new RespondUsersExceptionDto( //asigne the  raw value inside here
+        ResponseUsersExceptionDto errorDto = new ResponseUsersExceptionDto( //asigne the  raw value inside here
                 LocalDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
                 "User Not Found",

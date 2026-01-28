@@ -12,5 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 public class ResponseDoctorDto {
     private String userName;
+    private String fullName;
     private String department;
 }

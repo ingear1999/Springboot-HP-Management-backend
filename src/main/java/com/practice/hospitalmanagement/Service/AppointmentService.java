@@ -6,7 +6,7 @@ import com.practice.hospitalmanagement.Dto.RespondDto.ResponseAppointmentDto;
 import com.practice.hospitalmanagement.Entity.apointmentEntity.Appointment;
 import com.practice.hospitalmanagement.Entity.usersEntity.Doctor;
 import com.practice.hospitalmanagement.Entity.usersEntity.Users;
-import com.practice.hospitalmanagement.Repository.AppoinmentRepository;
+import com.practice.hospitalmanagement.Repository.AppointmentRepository;
 import com.practice.hospitalmanagement.Repository.DoctorRepository;
 import com.practice.hospitalmanagement.Repository.UserRepository;
 import com.practice.hospitalmanagement.exception.AppointmentCustomException;
@@ -21,11 +21,11 @@ import java.util.List;
 @Service
 public class AppointmentService {
 
-    private final AppoinmentRepository appointmentRepository;
+    private final AppointmentRepository appointmentRepository;
     private final UserRepository userRepository;
     private final DoctorRepository doctorRepository;
 
-    public AppointmentService(AppoinmentRepository appointmentRepository, UserRepository userRepository, DoctorRepository doctorRepository) {
+    public AppointmentService(AppointmentRepository appointmentRepository, UserRepository userRepository, DoctorRepository doctorRepository) {
         this.appointmentRepository = appointmentRepository;
         this.userRepository = userRepository;
         this.doctorRepository = doctorRepository;
@@ -102,7 +102,9 @@ public class AppointmentService {
                 .stream()
                 .map(appointment -> new ResponseAppointmentDto(
                         appointment.getName(),
+                        appointment.getUsers(),
                         appointment.getContactInfo(),
+                        appointment.getDoctor(),
                         appointment.getDate(),
                         appointment.getStatus()
                 ))

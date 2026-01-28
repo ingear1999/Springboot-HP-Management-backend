@@ -4,13 +4,14 @@ package com.practice.hospitalmanagement.Service;
 import com.practice.hospitalmanagement.Dto.RequestDto.RequestUserDTO;
 import com.practice.hospitalmanagement.Dto.RequestDto.UpdateUserPasswordDto;
 import com.practice.hospitalmanagement.Dto.RequestDto.UpdateUserProfileDto;
-import com.practice.hospitalmanagement.Dto.RespondDto.RespondUserDto;
+import com.practice.hospitalmanagement.Dto.RespondDto.ResponseUserDto;
 import com.practice.hospitalmanagement.Entity.usersEntity.Users;
 import com.practice.hospitalmanagement.Repository.UserRepository;
 import com.practice.hospitalmanagement.exception.UserNotFound;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 
 
 @Service
@@ -26,17 +27,19 @@ public class UserService {
 
     //Create Acc For The Users
     //=======================================================================
-    public RespondUserDto registerUser (RequestUserDTO userDto){
+    public ResponseUserDto registerUser (RequestUserDTO userDto){
+
         Users userEntity =new Users();
         userEntity.setUserName(userDto.getUserName());
         userEntity.setFirstName(userDto.getFirstName());
         userEntity.setLastName(userDto.getLastName());
         userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userEntity.setEmail(userDto.getEmail());
+        userEntity.setLastActiveAt(LocalDateTime.now());
 
         Users saved = userRepository.save(userEntity);
 
-        return new RespondUserDto(
+        return new ResponseUserDto(
                 saved.getUserName(),
                 saved.getFirstName()+" "+saved.getLastName(), //fullname
                 saved.getEmail()
@@ -51,8 +54,8 @@ public class UserService {
 
     //Check User Acc
     //======================================================================================
-    public RespondUserDto findbyId(long id){
-        return  userRepository.findById(id).map(Users -> new RespondUserDto(
+    public ResponseUserDto findbyId(long id){
+        return  userRepository.findById(id).map(Users -> new ResponseUserDto(
                 Users.getUserName(),
                 Users.getFirstName()+" "+Users.getLastName(),
                 Users.getEmail()
@@ -64,7 +67,7 @@ public class UserService {
     //update UserInformation
     //=============================================================================
 
-    public RespondUserDto updateUserProfile(long id, UpdateUserProfileDto dto){
+    public ResponseUserDto updateUserProfile(long id, UpdateUserProfileDto dto){
         Users userEntity = userRepository.findById(id).orElseThrow(()->new UserNotFound(id));
 
          boolean update = false;
@@ -90,7 +93,7 @@ public class UserService {
 
 
             Users saved = userRepository.save(userEntity);
-            return new RespondUserDto(
+            return new ResponseUserDto(
                     saved.getUserName(),
                     saved.getFirstName()+" "+saved.getLastName(),
                     saved.getEmail());
@@ -121,7 +124,7 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFound(id));
 
         // compare raw password with hashed password
-        if (!passwordEncoder.matches(updateUserPasswordDto.getOldPassword(), user.getPassword())) { //Is the password the user typed the same as the one they used before?”
+        if (!passwordEncoder.matches(updateUserPasswordDto.getOldPassword() , user.getPassword())) { //Is the password the user typed the same as the one they used before?
             throw new RuntimeException("Old password does not match");
         }
 

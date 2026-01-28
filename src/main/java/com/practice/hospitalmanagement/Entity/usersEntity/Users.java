@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -20,6 +21,9 @@ public class Users {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private  long Id;
 
+    @Column(name="user_name")
+    private String userName;
+
     @Column(name = "First_Name")
     private String firstName;
 
@@ -29,14 +33,16 @@ public class Users {
     @Column(name = "Email")
     private String email;
 
-    @Column(name="user_name")
-    private String userName;
-
     @Column(name="user_password")
     private String password;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     List <Appointment> appointment;
+
+    @Column(nullable = false)
+    private boolean active = true;
+
+    private LocalDateTime lastActiveAt;
 
 
 }

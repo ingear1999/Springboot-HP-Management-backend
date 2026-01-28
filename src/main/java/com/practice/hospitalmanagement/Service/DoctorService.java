@@ -7,7 +7,7 @@ import com.practice.hospitalmanagement.Dto.RespondDto.ResponseAppointmentDto;
 import com.practice.hospitalmanagement.Dto.RespondDto.ResponseDoctorDto;
 import com.practice.hospitalmanagement.Entity.apointmentEntity.Appointment;
 import com.practice.hospitalmanagement.Entity.usersEntity.Doctor;
-import com.practice.hospitalmanagement.Repository.AppoinmentRepository;
+import com.practice.hospitalmanagement.Repository.AppointmentRepository;
 import com.practice.hospitalmanagement.Repository.DoctorRepository;
 import com.practice.hospitalmanagement.status.AppointmentStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,12 +18,12 @@ import java.util.List;
 @Service
 public class DoctorService {
 
-    private final AppoinmentRepository appointmentRepository;
+    private final AppointmentRepository appointmentRepository;
     private final DoctorRepository doctorRepository;
     private final PasswordEncoder passwordEncoder;
 
     public DoctorService(DoctorRepository doctorRepository,
-                         AppoinmentRepository appointmentRepository, PasswordEncoder passwordEncoder) {
+                         AppointmentRepository appointmentRepository, PasswordEncoder passwordEncoder) {
         this.doctorRepository = doctorRepository;
         this.appointmentRepository = appointmentRepository;
         this.passwordEncoder = passwordEncoder;
@@ -46,8 +46,8 @@ public class DoctorService {
         Doctor savedDoctor = doctorRepository.save(doctor);
 
         ResponseDoctorDto response = new ResponseDoctorDto();
-        response.setDepartment(savedDoctor.getDepartment());
         response.setUserName(savedDoctor.getUserName());
+        response.setDepartment(savedDoctor.getDepartment());
 
         return response;
     }
@@ -117,7 +117,9 @@ public class DoctorService {
 
         return new ResponseAppointmentDto(
                 appointment.getName(),
+                appointment.getUsers(),
                 appointment.getContactInfo(),
+                appointment.getDoctor(),
                 appointment.getDate(),
                 appointment.getStatus()
         );

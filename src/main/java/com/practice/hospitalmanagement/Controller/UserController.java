@@ -4,7 +4,7 @@ import com.practice.hospitalmanagement.Dto.RequestDto.RequestAppointmentDto;
 import com.practice.hospitalmanagement.Dto.RequestDto.RequestUserDTO;
 import com.practice.hospitalmanagement.Dto.RequestDto.UpdateUserPasswordDto;
 import com.practice.hospitalmanagement.Dto.RequestDto.UpdateUserProfileDto;
-import com.practice.hospitalmanagement.Dto.RespondDto.RespondUserDto;
+import com.practice.hospitalmanagement.Dto.RespondDto.ResponseUserDto;
 import com.practice.hospitalmanagement.Dto.RespondDto.ResponseAppointmentDto;
 import com.practice.hospitalmanagement.Service.AppointmentService;
 import com.practice.hospitalmanagement.Service.UserService;
@@ -30,7 +30,7 @@ public class UserController {
      //Users Registeration
     //===============================================================================
     @PostMapping("/users")
-    public RespondUserDto getUserRequestDTO(
+    public ResponseUserDto getUserRequestDTO(
             @Valid @RequestBody RequestUserDTO userRequestDTO)// @RequestBody Converts the HTTP request body (JSON) → Java object
     {
         return  userService.registerUser(userRequestDTO); // it send and respond thorugh controller (the uservice class)
@@ -40,7 +40,7 @@ public class UserController {
     //Finding User
     //==============================================================================
     @GetMapping("/users/{id}")
-    public RespondUserDto getUserRespond(
+    public ResponseUserDto getUserRespond(
             @PathVariable int id)
     {
 
@@ -70,7 +70,7 @@ public class UserController {
     //Users Update Their Infor
     //===========================================================================
     @PutMapping("/users/{userId}")
-    public RespondUserDto updateUserInfo(@PathVariable long userId, @Valid @RequestBody UpdateUserProfileDto updateUserProfileDto){
+    public ResponseUserDto updateUserInfo(@PathVariable long userId, @Valid @RequestBody UpdateUserProfileDto updateUserProfileDto){
         return userService.updateUserProfile(userId, updateUserProfileDto); // return RespondUserDto with these agruments (userId, updateUserProfileDto)
     }
 

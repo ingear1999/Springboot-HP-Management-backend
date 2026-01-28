@@ -1,6 +1,6 @@
 package com.practice.hospitalmanagement.handler;
 
-import com.practice.hospitalmanagement.Dto.RespondDto.RespondUsersExceptionDto;
+import com.practice.hospitalmanagement.Dto.RespondDto.ResponseUsersExceptionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class ValidationHdl {
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<RespondUsersExceptionDto> validateUserRequest(MethodArgumentNotValidException manve){
+    public ResponseEntity<ResponseUsersExceptionDto> validateUserRequest(MethodArgumentNotValidException manve){
         String message = manve.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -22,7 +22,7 @@ public class ValidationHdl {
                 .orElse("Validation failed");
 
 
-        RespondUsersExceptionDto dto = new RespondUsersExceptionDto(
+        ResponseUsersExceptionDto dto = new ResponseUsersExceptionDto(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Validation Failed",
