@@ -1,0 +1,20 @@
+package com.practice.hospitalmanagement.Config;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class OpenapiConfig {
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("Open API Test With Swagger :) ")
+                        .description("Description")
+                        .version("4.0.0"));
+    }
+}
+
