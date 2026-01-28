@@ -91,7 +91,7 @@ public class UserController {
 
     //Users Cancel or Delete Their Appointment
     //============================================================================
-    @DeleteMapping("/users/{userId}/doctor/{doctorId}")
+    @DeleteMapping("/users/{userId}/doctor/{doctorId}/appointment")
     public void appointmentCancelation(@PathVariable long userId,@PathVariable long doctorId){
         appointmentService.appointmentCancelation(userId,doctorId);
     }
