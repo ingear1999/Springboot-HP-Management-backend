@@ -17,9 +17,7 @@ import java.time.LocalDate;
 public class ResponseAppointmentDto {
 
     private String name;
-    private Users users;
     private String contactInfo;
-    private Doctor doctor;
     private LocalDate date;
     private AppointmentStatus status;
 

@@ -54,14 +54,14 @@ public class UserService {
 
     //Check User Acc
     //======================================================================================
-    public ResponseUserDto findbyId(long id){
-        return  userRepository.findById(id).map(Users -> new ResponseUserDto(
-                Users.getUserName(),
-                Users.getFirstName()+" "+Users.getLastName(),
-                Users.getEmail()
-                )
-        ).orElseThrow(()->new UserNotFound(id)); // Exception handlers act like a central service for exceptions
-    }
+//    public ResponseUserDto findbyId(long id){
+//        return  userRepository.findById(id).map(Users -> new ResponseUserDto(
+//                Users.getUserName(),
+//                Users.getFirstName()+" "+Users.getLastName(),
+//                Users.getEmail()
+//                )
+//        ).orElseThrow(()->new UserNotFound(id)); // Exception handlers act like a central service for exceptions
+//    }
 
 
     //update UserInformation

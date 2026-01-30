@@ -15,10 +15,15 @@ import com.practice.hospitalmanagement.Repository.AdminRepositoryImpl;
 import com.practice.hospitalmanagement.Repository.AppointmentRepository;
 import com.practice.hospitalmanagement.Repository.DoctorRepository;
 import com.practice.hospitalmanagement.Repository.UserRepository;
+import com.practice.hospitalmanagement.exception.DoctorNoFound;
 import com.practice.hospitalmanagement.exception.UserNotFound;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import com.practice.hospitalmanagement.status.AppointmentStatus;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @Service
@@ -64,17 +69,24 @@ public class AdminService {
     //OverView the Appointment
     //=========================================================================================================
 
-    public List<ResponseAppointmentDto> getAllAppointments(){
-        return appointmentRepository.findAll().stream().map(appointment-> new ResponseAppointmentDto(
-                appointment.getName(),
-                appointment.getUsers(),
-                appointment.getContactInfo(),
-                appointment.getDoctor(),
-                appointment.getDate(),
-                appointment.getStatus()
-        )).toList();
+    public Page<ResponseAppointmentDto> getAllAppointments(Pageable pageable){
+        Pageable safePageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by(Sort.Direction.DESC, "createdAt")
+        );
+        return appointmentRepository
+                .findAll(safePageable)
+                .map(appointment -> new ResponseAppointmentDto(
+                        appointment.getName(),
+                        appointment.getContactInfo(),
+                        appointment.getDate(),
+                        appointment.getStatus()
+                ));
 
-    };
+    }
+
+
 
     //======================================================================================================
     //OverView the Doctor
@@ -89,16 +101,118 @@ public class AdminService {
     }
 
 
+    //======================================================================================================
+    //Find Appointment from this  Doctor By Id
+    //======================================================================================================
+    public List<ResponseAppointmentDto> getAllAppointmentfromDoctor(long doctorId){
+
+       Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new DoctorNoFound(doctorId
+        )); // check the doctor fisrt before returning if there's no doctor then throw exception
+
+        return appointmentRepository.findAllByDoctor_Id(doctorId).stream().map(appointment -> new ResponseAppointmentDto(
+                appointment.getName(),
+                appointment.getContactInfo(),
+                appointment.getDate(),
+                appointment.getStatus()
+        )).toList(); // if there's no appointment from the doctor then return eampty list
+    }
+
+
+    //======================================================================================================
+    //Find Appointment from this User By Id
+    //======================================================================================================
+    public List<ResponseAppointmentDto> getAllAppointmentfromUser(long userId){
+
+       Users users = userRepository.findById(userId).orElseThrow(()-> new UserNotFound(userId
+        )); // check the user fisrt before returning if there's no user then throw exception
+
+        return appointmentRepository.findByUsers_Id(userId).stream().map(appointment -> new ResponseAppointmentDto(
+                appointment.getName(),
+                appointment.getContactInfo(),
+                appointment.getDate(),
+                appointment.getStatus()
+        )).toList(); // if there's no appointment from the user then return eampty list
+    }
+
+
+    //======================================================================================================
+    //Find Appointment from Status
+    //======================================================================================================
+//    public List<ResponseAppointmentDto> getAllAppointmentByStatus(AppointmentStatus status){
+//
+//        return appointmentRepository.findByStatus(status).stream().map(appointment -> new ResponseAppointmentDto(
+//                appointment.getName(),
+//                appointment.getContactInfo(),
+//                appointment.getDate(),
+//                appointment.getStatus()
+//        )).toList(); // if there's no appointment from the user then return eampty list
+//    }
+    public Page<ResponseAppointmentDto> getAllAppointmentByStatus(
+            AppointmentStatus status,
+            Pageable pageable
+    ) {
+
+        Pageable safePageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by(Sort.Direction.DESC, "createdAt")
+        );
+
+        return appointmentRepository
+                .findByStatus(status,safePageable)
+                .map(appointment -> new ResponseAppointmentDto(
+                        appointment.getName(),
+                        appointment.getContactInfo(),
+                        appointment.getDate(),
+                        appointment.getStatus()
+                ));
+    }
+
+
+
+    //======================================================================================================
+    //Find Doctor By Id
+    //======================================================================================================
+
+    public ResponseDoctorDto getDoctorById(long doctorId){
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new DoctorNoFound(doctorId));
+        return new ResponseDoctorDto(
+                doctor.getUserName(),
+                doctor.getFirstName() + " " + doctor.getLastName(),
+                doctor.getEmail()
+        );
+    }
+
+
     //========================================================================================================
     //OverView the Users
     //========================================================================================================
-    public List<ResponseUserDto> getAllUsers(){
-        return userRepository.findAll().stream().map(users -> new ResponseUserDto(
-                users.getUserName(),
-                users.getFirstName()+" "+users.getLastName(),
-                users.getEmail()
-        )).toList();
+    public Page<ResponseUserDto> getAllUsers(Pageable pageable) {
+        Pageable safePageable = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by(Sort.Direction.DESC, "createdAt")
+        );
+        return userRepository.findAll(safePageable)
+                .map(user -> new ResponseUserDto(
+                        user.getUserName(),
+                        user.getFirstName() + " " + user.getLastName(),
+                        user.getEmail()
+                ));
     }
+
+    //======================================================================================================
+    //Find Users By Id
+    //======================================================================================================
+    public ResponseUserDto getUserById(long id){
+        Users user = userRepository.findById(id).orElseThrow(()-> new UserNotFound(id));
+        return new ResponseUserDto(
+                user.getUserName(),
+                user.getFirstName() + " " + user.getLastName(),
+                user.getEmail()
+        );
+    }
+
 
     public void disableUser(long id){
         Users users = userRepository.findById(id).orElseThrow(()->new UserNotFound(id));

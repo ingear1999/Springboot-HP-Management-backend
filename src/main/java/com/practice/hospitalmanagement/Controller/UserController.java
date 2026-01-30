@@ -39,13 +39,13 @@ public class UserController {
 
     //Finding User
     //==============================================================================
-    @GetMapping("/users/{id}")
-    public ResponseUserDto getUserRespond(
-            @PathVariable int id)
-    {
-
-        return userService.findbyId(id);
-    }
+//    @GetMapping("/users/{id}")
+//    public ResponseUserDto getUserRespond(
+//            @PathVariable int id)
+//    {
+//
+//        return userService.findbyId(id);
+//    }
 
 
     //Users Make Appointment

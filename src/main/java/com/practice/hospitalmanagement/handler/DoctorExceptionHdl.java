@@ -17,7 +17,7 @@ public class DoctorExceptionHdl {
     public ResponseEntity<ResponseDoctorException> handleException(DoctorNoFound e) {
         ResponseDoctorException responseDoctorException = new ResponseDoctorException(
                 LocalDateTime.now(),
-                "Exception Error",
+                "Doctor Not Found",
                 HttpStatus.BAD_REQUEST.value(), // get the value of bad request
                 e.getMessage()
 

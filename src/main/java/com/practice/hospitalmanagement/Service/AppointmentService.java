@@ -102,9 +102,7 @@ public class AppointmentService {
                 .stream()
                 .map(appointment -> new ResponseAppointmentDto(
                         appointment.getName(),
-                        appointment.getUsers(),
                         appointment.getContactInfo(),
-                        appointment.getDoctor(),
                         appointment.getDate(),
                         appointment.getStatus()
                 ))

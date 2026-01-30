@@ -47,6 +47,7 @@ public class DoctorService {
 
         ResponseDoctorDto response = new ResponseDoctorDto();
         response.setUserName(savedDoctor.getUserName());
+        response.setFullName(savedDoctor.getFirstName() + " " + savedDoctor.getLastName());
         response.setDepartment(savedDoctor.getDepartment());
 
         return response;
@@ -117,9 +118,7 @@ public class DoctorService {
 
         return new ResponseAppointmentDto(
                 appointment.getName(),
-                appointment.getUsers(),
                 appointment.getContactInfo(),
-                appointment.getDoctor(),
                 appointment.getDate(),
                 appointment.getStatus()
         );

@@ -6,8 +6,11 @@ import com.practice.hospitalmanagement.Entity.usersEntity.Users;
 import com.practice.hospitalmanagement.status.AppointmentStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name ="appointment")
 @Getter
@@ -40,6 +43,10 @@ public class Appointment {
 
     @Enumerated(EnumType.STRING) //DB stores PENDING... instead of 0,1 ..
     private AppointmentStatus status;
+
+    @CreationTimestamp //When this entity is FIRST saved, automatically set the current time.(to hibernate)
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
 }
 
